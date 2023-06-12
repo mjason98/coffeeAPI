@@ -1,20 +1,11 @@
 from flask import Flask, jsonify, request
 from flask import Response
+from dotenv import load_dotenv
+from services.auth import auth_checker
 
+load_dotenv()
 
 app = Flask(__name__)
-
-
-def check_credentials(username, password):
-    print(username, password)
-    return True
-
-
-def auth_checker(auth):
-    if not auth or not check_credentials(auth.username, auth.password):
-        return 0
-
-    return -1  # user Id for the future
 
 
 @app.route('/v1/coffee/favourite', methods=['GET'])
