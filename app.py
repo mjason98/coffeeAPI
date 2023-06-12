@@ -1,7 +1,11 @@
 from flask import Flask, jsonify, request
 from flask import Response
 from dotenv import load_dotenv
+
+
 from services.auth import auth_checker
+from services.coffee import get_best_coffee
+
 
 load_dotenv()
 
@@ -10,12 +14,15 @@ app = Flask(__name__)
 
 @app.route('/v1/coffee/favourite', methods=['GET'])
 def get_favorite_coffe():
-    if auth_checker(request.authorization) == 0:
+    userid = auth_checker(request.authorization)
+    if userid == 0:
         return Response('Unauthorized', 401,
                         {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
+    best_coffee = get_best_coffee(userid)
+
     result = {'data': {
-        "favouriteCofee": "espresso"
+        "favouriteCofee": best_coffee
         }
               }
     return jsonify(result)

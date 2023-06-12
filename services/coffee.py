@@ -2,25 +2,22 @@ from services.connect import create_conn
 
 
 def get_best_coffee(userid):
-    best_coffe = 'None'
+    best_coffee = ''
 
     try:
         conn = create_conn()
 
         query = f'''
-            SELECT Id from Users
-            WHERE Name='{username}' AND
-            Pwd='{password}'
+            SELECT c1 from UserCoffee
+            WHERE UserId='{userid}'
         '''
 
-        result = conn.execute(query)
-
-        print(result)
-
-        user_id = result[0]
+        result = conn.execute(query).fetchone()
+        best_coffee = result[0]
 
         conn.close()
     except Exception as e:
         print(f"An error occurred: {str(e)}")
+        raise 'Connection error'
 
-    return user_id
+    return best_coffee
