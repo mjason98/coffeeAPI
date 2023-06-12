@@ -32,8 +32,6 @@ def check_credentials(username, password):
 def auth_checker(auth):
     ide = check_credentials(auth.username, auth.password)
 
-    print(ide)
-
     if not auth or ide <= 0:
         return 0
 
