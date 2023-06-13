@@ -33,7 +33,26 @@ jobs:
         chmod 700 ~/.ssh
         ssh-keyscan -H ${{ secrets.IPADDR }} >> ~/.ssh/known_hosts
         echo "${{ secrets.SSH_KEY }}" > my_gh_key && chmod 600 my_gh_key
-
     - name: Copy files
       run: |
         scp -i my_gh_key coffee.service ubuntu@${{ secrets.IPADDR }}:
+        scp -i my_gh_key init_data.py ubuntu@${{ secrets.IPADDR }}:
+        scp -i my_gh_key app.py ubuntu@${{ secrets.IPADDR }}:
+        scp -r -i my_gh_key services ubuntu@${{ secrets.IPADDR }}:
+
+        echo "DB_NAME=${{ secrets.DB_NAME }}\nDB_USER_NAME=${{ secrets.DB_USER }}\nDB_USER_PWD=${{ secrets.DB_PWD }}" > .env
+        scp -r -i my_gh_key .env ubuntu@${{ secrets.IPADDR }}:
+    - name: Run remote app
+      run: |
+        ssh -i my_gh_key ubuntu@${{ secrets.IPADDR }} << EOF
+          rm -rf env
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+        EOF
+
+        ssh -l ubuntu -i my_gh_key ${{ secrets.IPADDR }} -C sudo mv coffee.service /etc/systemd/system
+        ssh -l ubuntu -i my_gh_key ${{ secrets.IPADDR }} -C sudo systemctl daemon-reload
+        ssh -l ubuntu -i my_gh_key ${{ secrets.IPADDR }} -C sudo systemctl stop coffee
+
+
