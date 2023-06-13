@@ -30,5 +30,5 @@ jobs:
     - name: Deploy to AWS
       run: |
         echo "${{ secrets.SSH_KEY }}" > my_gh_key && chmod 600 my_gh_key
-        ls -la
+        ssh-keyscan 3.122.231.106 > ~/.ssh/known_hosts
         scp -i my_gh_key coffee.service ubuntu@3.122.231.106:
