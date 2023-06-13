@@ -50,7 +50,7 @@ jobs:
           python3 -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
-          [ ! -f coffee.db ] && python init_data.py
+          [ ! -f coffee.db ] && python init_data.py || true
         EOF
 
         ssh -l ubuntu -i my_gh_key ${{ secrets.IPADDR }} -C sudo mv coffee.service /etc/systemd/system
