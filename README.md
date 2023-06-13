@@ -7,7 +7,7 @@ A simple Flask coffee api
 
 The following are the steps to build the app. It is necessary to create an EC2 on AWS.
 
-## EC2 Settup
+### EC2 Settup
 
 Create an EC2 in AWS, create the necesary ssh files to connect, connect to it and then:
 
@@ -22,3 +22,36 @@ Inside this repository, among the variables and secrets there is one called **IP
 There is also **SSH_KEY**, replace this value with the value of the private key used to connect by ssh to the EC2.
 
 
+To **enable the port** for the app, port 8080 must be enabled from the EC2 security group.
+
+### Run the app
+
+Just re-run an action of the main branch, with the above described keys set correctly it should work :)
+
+#### Manual configuration
+The following steps will be executed inside the EC2, after having connected via ssh.
+
+
+First clone the repository, create the virtual env, install the dependencies and the init the database info if needed:
+```shell
+git clone git@github.com:mjason98/coffeeAPI.git
+
+rm -rf env
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+[ ! -f coffee.db ] && python init_data.py
+```
+
+then run the following commands. These are repeated to avoid errors in case this is not the first time mounting the app.
+
+```shell
+sudo mv coffee.service /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl stop coffee
+sudo systemctl daemon-reload
+sudo systemctl enable coffee
+sudo systemctl start coffee
+```
+
+The app must be running on port 8080, and must be accessible from outside if EC2 was configured in the previous steps.
