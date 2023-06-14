@@ -1,16 +1,18 @@
 from services.connect import create_conn
 from dotenv import load_dotenv
 import os
-
+import sys
 
 load_dotenv()
 
 
 if __name__ == '__main__':
+    db_path = sys.argv[1]
+
     username = os.getenv("DB_USER_NAME")
     userpwd = os.getenv("DB_USER_PWD")
 
-    conn = create_conn()
+    conn = create_conn(db_path)
 
     drop_table_query1 = "DROP TABLE IF EXISTS Users"
     drop_table_query2 = "DROP TABLE IF EXISTS UserCoffee"
