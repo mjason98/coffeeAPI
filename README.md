@@ -34,16 +34,26 @@ The following steps will be executed inside the EC2, after having connected via 
 
 First clone the repository, create the virtual env, install the dependencies and the init the database info if needed:
 ```shell
+cd /home/ubuntu
+
 git clone git@github.com:mjason98/coffeeAPI.git
 
 rm -rf env
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-[ ! -f coffee.db ] && python init_data.py
+[ ! -f coffee.db ] && python init_data.py || true
 ```
 
-then run the following commands. These are repeated to avoid errors in case this is not the first time mounting the app.
+Then it is necessary to create the .env file:
+
+```shell
+echo -e "DB_NAME=coffee.db\nDB_USER_NAME=<your user name>\nDB_USER_PWD=<your password>" > .env
+```
+
+replaces the user name and password with the values you find convenient.
+
+Then run the following commands. These are repeated to avoid errors in case this is not the first time mounting the app.
 
 ```shell
 sudo mv coffee.service /etc/systemd/system
