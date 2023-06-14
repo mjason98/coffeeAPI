@@ -24,11 +24,11 @@ for the security group, create\select one with the port 8080 enabled and ssh por
 
 Then in the Avanced details, in User data paste the content of the file aws_userdata on it.
 
-![user data](images/im8)
+![user data](images/im8.png)
 
 launch the instance.
 
-![user data](images/im9)
+![user data](images/im9.png)
 
 ## AMI
 
