@@ -1,26 +1,18 @@
 #!/bin/bash
 
-APPDIR=/home/ubuntu/
-
 yes | sudo apt update
 sudo apt-get install -y python3-pip
 sudo apt-get install -y python3-venv
 
 git clone https://github.com/mjason98/coffeeAPI.git
 
-mv coffeeAPI/* $APPDIR
+python3 -m venv coffeeAPI/venv
+source coffeeAPI/venv/bin/activate
+pip install -r coffeeAPI/requirements.txt
 
-rm -rf coffeeAPI
-rm -rf ${APPDIR}env
+echo -e "DB_NAME=coffee.db\nDB_USER_NAME=user\nDB_USER_PWD=ea654541-426a-409c-a1b3-4597a0ecbfee" > coffeeAPI/.env
 
-python3 -m venv ${APPDIR}venv
-source ${APPDIR}venv/bin/activate
-pip install -r ${APPDIR}requirements.txt
-[ ! -f ${APPDIR}coffee.db ] && python ${APPDIR}init_data.py ${APPDIR} || true
-
-echo -e "DB_NAME=coffee.db\nDB_USER_NAME=user\nDB_USER_PWD=ea654541-426a-409c-a1b3-4597a0ecbfee" > ${APPDIR}.env
-
-sudo mv ${APPDIR}coffee.service /etc/systemd/system
+sudo mv coffeeAPI/coffee.service /etc/systemd/system
 sudo systemctl daemon-reload
 sudo systemctl stop coffee
 sudo systemctl daemon-reload

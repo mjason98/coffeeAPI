@@ -7,9 +7,11 @@ from services.auth import auth_checker
 from services.coffee import get_best_coffee
 from services.coffee import get_top3_coffee
 from services.coffee import set_top3_coffee
-
+from services.init_data import init_data
 
 load_dotenv()
+init_data()
+
 
 app = Flask(__name__)
 
