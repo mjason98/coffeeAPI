@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask import Response
+from flask import make_response
 from dotenv import load_dotenv
 
 
@@ -62,6 +63,13 @@ def post_favorite_coffes():
     result = {'data': {"top3": list(top3)}}
 
     return jsonify(result)
+
+
+@app.route('/v1/healthcheck', methods=['GET'])
+def healh_check():
+    response = make_response("OK")
+    response.status_code = 200
+    return response
 
 
 if __name__ == '__main__':
