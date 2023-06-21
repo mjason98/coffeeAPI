@@ -7,3 +7,7 @@ A simple Flask coffee api.
 
 For the AWS SQS to work, remember to fill the values for the env variables in a file named .env, use .env.example as a quide.
 
+For the listener process, just run the following command:
+```shell
+python email_consumer.py
+```
