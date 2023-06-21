@@ -24,15 +24,16 @@ def init_data():
     CREATE TABLE IF NOT EXISTS Users (
             Id INTEGER PRIMARY KEY AUTOINCREMENT,
             Name TEXT,
-            Pwd TEXT
+            Pwd TEXT,
+            Email TEXT
             )
     '''
 
     conn.execute(create_table_query)
 
     insert_first_user = f'''
-    INSERT INTO Users (Name, Pwd)
-    VALUES ('{username}', '{userpwd}')
+    INSERT INTO Users (Name, Pwd, Email)
+    VALUES ('{username}', '{userpwd}', 'example@ex.org')
     '''
 
     conn.execute(insert_first_user)

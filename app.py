@@ -9,6 +9,8 @@ from services.coffee import get_best_coffee
 from services.coffee import get_top3_coffee
 from services.coffee import set_top3_coffee
 from services.init_data import init_data
+from services.auth import add_user
+
 
 load_dotenv()
 init_data()
@@ -69,6 +71,26 @@ def post_favorite_coffes():
 def healh_check():
     response = make_response("OK")
     response.status_code = 200
+    return response
+
+
+@app.route('/v1/user/add', methods=['POST'])
+def post_add_user():
+    userid = auth_checker(request.authorization)
+    if userid == 0:
+        return Response('Unauthorized', 401,
+                        {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+    body = request.get_json()
+    username = body['user']
+    password = body['password']
+    email = body['email']
+
+    add_user(username, password, email)
+
+    response = make_response()
+    response.status_code = 200
+
     return response
 
 

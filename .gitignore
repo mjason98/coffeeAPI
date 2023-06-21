@@ -1,5 +1,6 @@
 .venv
 .git
 coffee.db
-.env
 test.txt
+test.py
+.env
