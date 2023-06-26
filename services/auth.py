@@ -1,4 +1,11 @@
 from services.connect import create_conn
+from flask import request
+
+
+def auth_limiter_function():
+    auth = request.authorization
+    lim_key = f'user_{auth.username}'
+    return lim_key
 
 
 def get_userid_from_credentials(username, password):
